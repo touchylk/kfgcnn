@@ -196,7 +196,7 @@ def nn_base(input_tensor=None, trainable=False):
     x = identity_block(x, 3, [256, 256, 1024], stage=4, block='d', trainable = trainable)
     x = identity_block(x, 3, [256, 256, 1024], stage=4, block='e', trainable = trainable)
     x = identity_block(x, 3, [256, 256, 1024], stage=4, block='f', trainable = trainable)
-
+    # 看一下网络输出的形状.
     return x
 
 
@@ -204,10 +204,11 @@ def classifier_layers(x, input_shape, trainable=False):
 
     # compile times on theano tend to be very high, so we use smaller ROI pooling regions to workaround
     # (hence a smaller stride in the region that follows the ROI pool)
-    if K.backend() == 'tensorflow':
+    """if K.backend() == 'tensorflow':
         x = conv_block_td(x, 3, [512, 512, 2048], stage=5, block='a', input_shape=input_shape, strides=(2, 2), trainable=trainable)
     elif K.backend() == 'theano':
-        x = conv_block_td(x, 3, [512, 512, 2048], stage=5, block='a', input_shape=input_shape, strides=(1, 1), trainable=trainable)
+        x = conv_block_td(x, 3, [512, 512, 2048], stage=5, block='a', input_shape=input_shape, strides=(1, 1), trainable=trainable)"""
+    x = conv_block_td(x, 3, [512, 512, 2048], stage=5, block='a', input_shape=input_shape, strides=(2, 2), trainable=trainable)
 
     x = identity_block_td(x, 3, [512, 512, 2048], stage=5, block='b', trainable=trainable)
     x = identity_block_td(x, 3, [512, 512, 2048], stage=5, block='c', trainable=trainable)
@@ -222,7 +223,7 @@ def rpn(base_layers,num_anchors):
 
     x_class = Convolution2D(num_anchors, (1, 1), activation='sigmoid', kernel_initializer='uniform', name='rpn_out_class')(x)
     x_regr = Convolution2D(num_anchors * 4, (1, 1), activation='linear', kernel_initializer='zero', name='rpn_out_regress')(x)
-
+    #这里应该是只是做了两层简单的卷积,没有anchor的引入,anchor的体现应在损失函数中.返回是一个list,包括了rpn的分类和回国的只.
     return [x_class, x_regr, base_layers]
 
 def classifier(base_layers, input_rois, num_rois, nb_classes = 21, trainable=False):

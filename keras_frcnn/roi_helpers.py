@@ -1,3 +1,4 @@
+# coding: utf-8
 import numpy as np
 import pdb
 import math
@@ -85,6 +86,7 @@ def calc_iou(R, img_data, C, class_mapping):
 		else:
 			y_class_regr_coords.append(copy.deepcopy(coords))
 			y_class_regr_label.append(copy.deepcopy(labels))
+			#这里定义了y_true
 
 	if len(x_roi) == 0:
 		return None, None, None, None

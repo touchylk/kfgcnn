@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
 import os
 import cv2
 import xml.etree.ElementTree as ET
+import config
 import numpy as np
+cfg = config.Config()
 def get_data(input_path):
 	all_imgs = []
 
@@ -11,7 +14,7 @@ def get_data(input_path):
 
 	visualise = False
 
-	data_paths = [os.path.join(input_path,s) for s in ['VOC2007', 'VOC2012']]
+	data_paths = [os.path.join(input_path,s) for s in cfg.pascal_voc_year]
 	
 
 	print('Parsing annotation files')
@@ -100,3 +103,8 @@ def get_data(input_path):
 				print(e)
 				continue
 	return all_imgs, classes_count, class_mapping
+		# all_imgs 是annotation_data的列表
+		# 每一个annotationdata是一个dict,包含 了''filepath,width,height,'bboxes,imageset
+		#其中,bboxes是一个列表,每一个box是一个字典
+		#
+

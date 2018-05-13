@@ -28,7 +28,7 @@ class Config:
 		self.img_scaling_factor = 1.0
 
 		# number of ROIs at once
-		self.num_rois = 4
+		self.num_rois = 32
 
 		# stride at the RPN (this depends on the network configuration)
 		self.rpn_stride = 16
@@ -55,4 +55,12 @@ class Config:
 		# https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_th_dim_ordering_th_kernels_notop.h5
 		# https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
 
-		self.model_path = 'model_frcnn.vgg.hdf5'
+		self.model_path = '/media/e813/D/weights/kerash5/frcnn/TST2/model_frcnn.vgg.hdf5'#'model_frcnn.vgg.hdf5'
+		self.pascal_voc_year = ['VOC2007']
+
+		self.train_path = '/home/e813/dataset/VOCdevkit_2007_trainval'
+		self.input_weight_path = None#'/media/e813/D/weights/kerash5/resnet50/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+		self.output_weight_path = '/media/e813/D/weights/kerash5/frcnn/tstVOC/model_frcnn.hdf5'
+		self.config_filepath = 'config.pickle'
+
+		# Path to training data.

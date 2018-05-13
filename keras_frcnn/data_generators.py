@@ -1,3 +1,4 @@
+# coding:utf-8
 from __future__ import absolute_import
 import numpy as np
 import cv2
@@ -6,7 +7,6 @@ import copy
 from . import data_augment
 import threading
 import itertools
-
 
 def union(au, bu, area_intersection):
 	area_a = (au[2] - au[0]) * (au[3] - au[1])
@@ -291,6 +291,7 @@ def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backen
 
 				if mode == 'train':
 					img_data_aug, x_img = data_augment.augment(img_data, C, augment=True)
+					#img_data_aug 为图像的标签等,x_img 为CV2.numpy
 				else:
 					img_data_aug, x_img = data_augment.augment(img_data, C, augment=False)
 

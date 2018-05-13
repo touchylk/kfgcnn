@@ -1,4 +1,5 @@
 from __future__ import division
+from __future__ import print_function
 import os
 import cv2
 import numpy as np
@@ -149,6 +150,7 @@ visualise = True
 
 for idx, img_name in enumerate(sorted(os.listdir(img_path))):
 	if not img_name.lower().endswith(('.bmp', '.jpeg', '.jpg', '.png', '.tif', '.tiff')):
+		print('oo')
 		continue
 	print(img_name)
 	st = time.time()
