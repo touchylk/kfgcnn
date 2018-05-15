@@ -87,7 +87,7 @@ else:
 	cfg.base_net_weights = nn.get_weight_path()
 #设定restore路径
 
-all_imgs, classes_count, class_mapping = get_data(options.train_path) #get_data函数在pascalvocparser.py里变
+all_imgs, classes_count, class_mapping,bird_class_count,bird_class_mapping = get_data(options.train_path) #get_data函数在pascalvocparser.py里变
 
 if 'bg' not in classes_count:
 	classes_count['bg'] = 0
@@ -100,6 +100,10 @@ inv_map = {v: k for k, v in class_mapping.items()}
 print('Training images per class:')
 pprint.pprint(classes_count)
 print('Num classes (including bg) = {}'.format(len(classes_count)))
+print('Training bird per class:')
+pprint.pprint(bird_class_count)
+print('total birds class is {}'.format(len(bird_class_count)))
+#exit()
 
 config_output_filename = cfg.config_filepath #options.config_filename
 
@@ -144,6 +148,11 @@ classifier = nn.classifier(shared_layers, roi_input, cfg.num_rois, nb_classes=le
 #这里roiinput 似乎是作为一个输入,看下面怎么弄的e
 
 
+
+
+
+
+model_share = Model(img_input,shared_layers)
 model_rpn = Model(img_input, rpn[:2])
 model_classifier = Model([img_input, roi_input], classifier)
 
@@ -156,6 +165,7 @@ try:
 	print('loading weights from {}'.format(cfg.base_net_weights))
 	model_rpn.load_weights(cfg.base_net_weights, by_name=True)
 	model_classifier.load_weights(cfg.base_net_weights, by_name=True)
+	model_share.load_weights(cfg.base_net_weights,by_name=True)
 except:
 	print('Could not load pretrained model weights. Weights can be found in the keras application folder \
 		https://github.com/fchollet/keras/tree/master/keras/applications')
@@ -163,9 +173,16 @@ except:
 optimizer = Adam(lr=1e-5)
 optimizer_classifier = Adam(lr=1e-5)
 model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(num_anchors), losses.rpn_loss_regr(num_anchors)])
-#这里等会重点看损失是咱们定义的.
+
 model_classifier.compile(optimizer=optimizer_classifier, loss=[losses.class_loss_cls, losses.class_loss_regr(len(classes_count)-1)], metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
+
 model_all.compile(optimizer='sgd', loss='mae')
+model_share.compile(optimizer='sgd',loss='mae')
+X, Y, img_data = next(data_gen_train)
+#share_output = model_share.predict_on_batch(X)
+#print(type(share_output))
+#print(share_output.shape)
+#exit(5)
 
 epoch_length = 1000
 num_epochs = int(options.num_epochs)
@@ -312,4 +329,4 @@ for epoch_num in range(num_epochs):
 			print('Exception: {}'.format(e))
 			continue
 
-print('Training complete, exiting.')
+print('Training complete, 呵呵.')

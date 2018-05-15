@@ -196,7 +196,7 @@ def nn_base(input_tensor=None, trainable=False):
     x = identity_block(x, 3, [256, 256, 1024], stage=4, block='d', trainable = trainable)
     x = identity_block(x, 3, [256, 256, 1024], stage=4, block='e', trainable = trainable)
     x = identity_block(x, 3, [256, 256, 1024], stage=4, block='f', trainable = trainable)
-    # 看一下网络输出的形状.
+    # 看一下网络输出的形状.网络输出的形状是(1, 38, 56, 1024)
     return x
 
 
@@ -246,4 +246,23 @@ def classifier(base_layers, input_rois, num_rois, nb_classes = 21, trainable=Fal
     # note: no regression target for bg class
     out_regr = TimeDistributed(Dense(4 * (nb_classes-1), activation='linear', kernel_initializer='zero'), name='dense_regress_{}'.format(nb_classes))(out)
     return [out_class, out_regr]
+
+def fg_location(base_layers,num_anchors):
+    x = Convolution2D(512, (3, 3), padding='same', activation='relu', kernel_initializer='normal', name='rpn_conv1')(base_layers)
+    x_class = Convolution2D(num_anchors, (1, 1), activation='sigmoid', kernel_initializer='uniform', name='rpn_out_class')(x)
+    x_regr = Convolution2D(num_anchors * 4, (1, 1), activation='linear', kernel_initializer='zero',name='rpn_out_regress')(x)
+    # 这里应该是只是做了两层简单的卷积,没有anchor的引入,anchor的体现应在损失函数中.返回是一个list,包括了rpn的分类和回国的只.
+    return [x_class, x_regr, base_layers]
+
+
+def fg_classifier(base_layers, input_rois, num_rois, nb_classes = 10, trainable=False):
+    pooling_regions = 14
+    input_shape = (num_rois, 14, 14, 1024)
+
+    out_roi_pool = RoiPoolingConv(pooling_regions, num_rois)([base_layers, input_rois])
+    out = classifier_layers(out_roi_pool,input_shape=input_shape,trainable=True)
+    out = TimeDistributed(Flatten())(out)
+    out_class = TimeDistributed(Dense(200, activation='softmax',kernel_initializer='zero'), name='dense_class_{}'.format(nb_classes))(out)
+
+    return out_class
 

@@ -82,7 +82,7 @@ def nn_base(input_tensor=None, trainable=False):
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2')(x)
     x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3')(x)
     # x = MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)
-    #网络输出,哟啊看一下网络输出的形状.
+    #网络输出,哟啊看一下网络输出的形状.(1, 37, 50, 512)
     return x
 
 def rpn(base_layers, num_anchors):
