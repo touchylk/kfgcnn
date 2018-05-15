@@ -17,6 +17,7 @@ from keras_frcnn import config, data_generators
 from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
 from keras.utils import generic_utils
+from keras_frcnn import march
 
 cfg = config.Config()
 sys.setrecursionlimit(40000)
@@ -45,7 +46,11 @@ parser.add_option("--output_weight_path", dest="output_weight_path", help="Outpu
                   default='./model_frcnn.hdf5')
 parser.add_option("--input_weight_path", dest="input_weight_path",
                   help="Input path for weights. If not specified, will try to load default weights provided by keras.")'''
-
+def format_img(img, C):
+	""" formats an image for model prediction based on config """
+	img, ratio = format_img_size(img, C)
+	img = format_img_channels(img, C)
+	return img, ratio
 #(options, args) = parser.parse_args()
 #options.train_path = cfg.train_path
 #options.input_weight_path = cfg.input_weight_path
@@ -97,6 +102,8 @@ else:
 
 all_imgs, classes_count, class_mapping, bird_class_count, bird_class_mapping = get_data(
     cfg.train_path)  # get_data函数在pascalvocparser.py里变
+
+data_lei = march.get_voc_label(all_imgs, classes_count, class_mapping, bird_class_count, bird_class_mapping,trainable=True)
 
 if 'bg' not in classes_count:
     classes_count['bg'] = 0
@@ -190,6 +197,7 @@ try:
     print('loading weights from {}'.format(cfg.base_net_weights))
     model_rpn.load_weights(cfg.base_net_weights, by_name=True)
     model_classifier.load_weights(cfg.base_net_weights, by_name=True)
+    model_birdclassifier.load_weights(cfg.base_net_weights, by_name=True)
 except:
     print('Could not load pretrained model weights. Weights can be found in the keras application folder \
 		https://github.com/fchollet/keras/tree/master/keras/applications')
@@ -207,6 +215,18 @@ model_birdclassifier.compile(optimizer=optimizer,
                              )
 
 model_all.compile(optimizer='sgd', loss='mae')
+
+train_num =1000
+for i in train_num:
+    img_path, boxdict, labellist = data_lei.get_next_batch()
+    img = cv2.imread(img_path)
+    #[img_input, head_roi, legs_roi, wings_roi, back_roi, belly_roi, breast_roi, tail_roi]
+    X, ratio = format_img(img, cfg)
+    inputlist = [X,boxdict['head'],boxdict[''],boxdict['wings'],boxdict['back'],boxdict['belly'],boxdict['breast'],boxdict['tail']]
+    if K.image_dim_ordering() == 'tf':
+        X = np.transpose(X, (0, 2, 3, 1))
+    model_birdclassifier.train_on_batch(inputlist,labellist)
+
 
 epoch_length = 1000
 num_epochs = int(cfg.num_epochs)
