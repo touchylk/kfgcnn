@@ -237,6 +237,8 @@ for epoch_num in range(num_epochs):
 			#R为boxes 和概率,经过非最大抑制之后的.
 			# note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
 			X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, cfg, class_mapping)
+			#print(X2)
+			exit(8)
 			#这里,x2为roi区域的坐标标签,Y1为roi区域的分类标签,y2为roi区域的坐标标签,坐标标签还是带label的.
 
 			if X2 is None:

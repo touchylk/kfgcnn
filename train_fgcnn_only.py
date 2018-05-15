@@ -203,7 +203,8 @@ model_classifier.compile(optimizer=optimizer_classifier,
                          metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
 
 model_birdclassifier.compile(optimizer=optimizer,
-                             loss=losses.bird_loss,)
+                             loss=losses.bird_loss,
+                             )
 
 model_all.compile(optimizer='sgd', loss='mae')
 
@@ -263,6 +264,8 @@ for epoch_num in range(num_epochs):
             # R为boxes 和概率,经过非最大抑制之后的.
             # note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
             X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, cfg, class_mapping)
+            #X2为左上角点的坐标和w,h
+
             # 这里,x2为roi区域的坐标标签,Y1为roi区域的分类标签,y2为roi区域的坐标标签,坐标标签还是带label的.
 
             if X2 is None:

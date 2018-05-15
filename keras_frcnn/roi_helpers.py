@@ -97,7 +97,7 @@ def calc_iou(R, img_data, C, class_mapping):
 
 	return np.expand_dims(X, axis=0), np.expand_dims(Y1, axis=0), np.expand_dims(Y2, axis=0), IoUs
 
-def apply_regr(x, y, w, h, tx, ty, tw, th):
+def apply_regr1(x, y, w, h, tx, ty, tw, th):
 	try:
 		cx = x + w/2.
 		cy = y + h/2.
