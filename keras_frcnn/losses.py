@@ -70,13 +70,14 @@ def class_loss_cls(y_true, y_pred):
 	return lambda_cls_class * K.mean(categorical_crossentropy(y_true[0, :, :], y_pred[0, :, :]))
 
 #[head_classifier,legs_classifier,wings_classifier,back_classifier,belly_classifier,breast_classifier,tail_classifier]
-
-def bird_loss(bird_true, y_pred_list):
-	head_loss = head_l* bird_true[0][0]*categorical_crossentropy(bird_true[0][1:],y_pred_list[0])
-	legs_loss = legs_l * bird_true[1][0] * categorical_crossentropy(bird_true[1][1:], y_pred_list[1])
-	wings_loss = wings_l * bird_true[2][0] * categorical_crossentropy(bird_true[2][1:], y_pred_list[2])
-	back_loss = back_l * bird_true[3][0] * categorical_crossentropy(bird_true[3][1:], y_pred_list[3])
-	belly_loss = belly_l * bird_true[4][0] * categorical_crossentropy(bird_true[4][1:], y_pred_list[4])
-	breast_loss = breast_l * bird_true[5][0] * categorical_crossentropy(bird_true[5][1:], y_pred_list[5])
-	tail_loss = tail_l * bird_true[6][0] * categorical_crossentropy(bird_true[6][1:], y_pred_list[6])
-	return (head_loss+legs_loss+wings_loss+back_loss+belly_loss+breast_loss+tail_loss)/7
+def bird_loss(num):
+	def bird_loss1(bird_true, y_pred_list):
+		head_loss = head_l* bird_true[0][0]*categorical_crossentropy(bird_true[0][1:],y_pred_list[0])
+		legs_loss = legs_l * bird_true[1][0] * categorical_crossentropy(bird_true[1][1:], y_pred_list[1])
+		wings_loss = wings_l * bird_true[2][0] * categorical_crossentropy(bird_true[2][1:], y_pred_list[2])
+		back_loss = back_l * bird_true[3][0] * categorical_crossentropy(bird_true[3][1:], y_pred_list[3])
+		belly_loss = belly_l * bird_true[4][0] * categorical_crossentropy(bird_true[4][1:], y_pred_list[4])
+		breast_loss = breast_l * bird_true[5][0] * categorical_crossentropy(bird_true[5][1:], y_pred_list[5])
+		tail_loss = tail_l * bird_true[6][0] * categorical_crossentropy(bird_true[6][1:], y_pred_list[6])
+		return (head_loss+legs_loss+wings_loss+back_loss+belly_loss+breast_loss+tail_loss)/7
+	return bird_loss1

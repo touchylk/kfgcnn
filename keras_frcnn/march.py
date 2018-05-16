@@ -36,7 +36,7 @@ class get_voc_label(object):
             if self.batch_index>=self.max_batch:
                 self.batch_index=0
             img = self.all_imgs[self.batch_index]
-        label = bird_class_mapping[img['bird_class_name']]
+        label = self.bird_class_mapping[img['bird_class_name']]
         boxlist =[]
         size_w = img['width']
         size_h = img['height']
@@ -65,7 +65,7 @@ class get_voc_label(object):
         return img_path,boxdict,labellist
 
 
-    def match(boxlist, label):
+    def match(self,boxlist, label):
         # boxlist的内容是一个dict,name为head,legs等,cor为左上角坐标,宽和长,在0-1之间
         # label的内同是一个数
         labellist = []
@@ -92,6 +92,13 @@ class get_voc_label(object):
             cor_np = np.expand_dims(cor_np, axis=0)
             cor_np = np.expand_dims(cor_np, axis=0)
             boxdict[box['name']] = cor_np
+
+        npnone = np.zeros([1,1,4])
+        # [head_classifier,legs_classifier,wings_classifier,back_classifier,belly_classifier,breast_classifier,tail_classifier]
+        cname = ['head','legs','wings','back','belly','breast','tail']
+        for onecname in cname:
+            if onecname not in boxdict:
+                boxdict[onecname] = npnone
 
         return boxdict, labellist
 

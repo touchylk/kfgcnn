@@ -9,6 +9,8 @@ import numpy as np
 from optparse import OptionParser
 import pickle
 
+import cv2
+
 from keras import backend as K
 from keras.optimizers import Adam, SGD, RMSprop
 from keras.layers import Input
@@ -46,6 +48,36 @@ parser.add_option("--output_weight_path", dest="output_weight_path", help="Outpu
                   default='./model_frcnn.hdf5')
 parser.add_option("--input_weight_path", dest="input_weight_path",
                   help="Input path for weights. If not specified, will try to load default weights provided by keras.")'''
+
+
+def format_img_size(img, C):
+    """ formats the image size based on config """
+    img_min_side = float(C.im_size)
+    (height, width, _) = img.shape
+
+    if width <= height:
+        ratio = img_min_side / width
+        new_height = int(ratio * height)
+        new_width = int(img_min_side)
+    else:
+        ratio = img_min_side / height
+        new_width = int(ratio * width)
+        new_height = int(img_min_side)
+    img = cv2.resize(img, (new_width, new_height), interpolation=cv2.INTER_CUBIC)
+    return img, ratio
+
+def format_img_channels(img, C):
+	""" formats the image channels based on config """
+	img = img[:, :, (2, 1, 0)]
+	img = img.astype(np.float32)
+	img[:, :, 0] -= C.img_channel_mean[0]
+	img[:, :, 1] -= C.img_channel_mean[1]
+	img[:, :, 2] -= C.img_channel_mean[2]
+	img /= C.img_scaling_factor
+	#img = np.transpose(img, (2, 0, 1))
+	img = np.expand_dims(img, axis=0)
+	return img
+
 def format_img(img, C):
 	""" formats an image for model prediction based on config """
 	img, ratio = format_img_size(img, C)
@@ -119,7 +151,7 @@ print('Num classes (including bg) = {}'.format(len(classes_count)))
 print('Training bird per class:')
 pprint.pprint(bird_class_count)
 print('total birds class is {}'.format(len(bird_class_count)))
-exit()
+#exit()
 
 config_output_filename = cfg.config_filepath  # options.config_filename
 
@@ -153,7 +185,14 @@ else:
 
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(None, 4))  # roiinput是什么,要去看看清楚
-bird_rois_input = Input(shape=(None, 4))
+bird_rois_input0 = Input(shape=(None, 4))
+bird_rois_input1 = Input(shape=(None, 4))
+bird_rois_input2 = Input(shape=(None, 4))
+bird_rois_input3 = Input(shape=(None, 4))
+bird_rois_input4 = Input(shape=(None, 4))
+bird_rois_input5 = Input(shape=(None, 4))
+bird_rois_input6 = Input(shape=(None, 4))
+
 # define the base network (resnet here, can be VGG, Inception, etc)
 shared_layers = nn.nn_base(img_input, trainable=True)  # 共享网络层的输出.要明确输出的size
 
@@ -165,7 +204,8 @@ rpn = nn.rpn(shared_layers, num_anchors)  ##这里应该是只是做了两层简
 classifier = nn.classifier(shared_layers, roi_input, cfg.num_rois, nb_classes=len(classes_count),
                            trainable=True)  # 主要这里的nb_classes改程序的时候要主要
 # 这里roiinput 似乎是作为一个输入,看下面怎么弄的e
-bird_classifier_output = nn.fg_classifier(shared_layers,bird_rois_input,nb_classes=200, trainable=True)
+bird_classifier_output = nn.fg_classifier(shared_layers,bird_rois_input0,bird_rois_input1,bird_rois_input2,bird_rois_input3,bird_rois_input4,
+                                          bird_rois_input5,bird_rois_input6,nb_classes=200, trainable=True)
 
 
 '''
@@ -194,7 +234,7 @@ model_birdclassifier  =Model([img_input,head_roi,legs_roi,wings_roi,back_roi,bel
 
 model_rpn = Model(img_input, rpn[:2])
 model_classifier = Model([img_input, roi_input], classifier)
-model_birdclassifier = Model([img_input,bird_rois_input],bird_classifier_output)
+model_birdclassifier = Model([img_input, bird_rois_input0,bird_rois_input1,bird_rois_input2,bird_rois_input3,bird_rois_input4,bird_rois_input5,bird_rois_input6], bird_classifier_output)
 
 #model_birdclassifier = Model([img_input,roi_input],bird_)
 
@@ -221,25 +261,26 @@ model_classifier.compile(optimizer=optimizer_classifier,
                          metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
 
 model_birdclassifier.compile(optimizer=optimizer,
-                             loss=losses.bird_loss,
+                             loss=losses.bird_loss(1),
                              )
 
 model_all.compile(optimizer='sgd', loss='mae')
 
 train_num =1000
-for i in train_num:
+for i in range(train_num):
     img_path, boxdict, labellist = data_lei.get_next_batch()
     img = cv2.imread(img_path)
     #[img_input, head_roi, legs_roi, wings_roi, back_roi, belly_roi, breast_roi, tail_roi]
     X, ratio = format_img(img, cfg)
     boxlist = [boxdict['head'],boxdict['legs'],boxdict['wings'],boxdict['back'],boxdict['belly'],boxdict['breast'],boxdict['tail']]
+    input_list= [X,boxdict['head'],boxdict['legs'],boxdict['wings'],boxdict['back'],boxdict['belly'],boxdict['breast'],boxdict['tail']]
     boxnp = np.zeros([7,4])
     for i in range(7):
         boxnp[i]= boxlist[i]
-
+    boxnp = np.expand_dims(boxnp,axis=1)
     if K.image_dim_ordering() == 'tf':
         X = np.transpose(X, (0, 2, 3, 1))
-    model_birdclassifier.train_on_batch([X,boxnp],labellist)
+    model_birdclassifier.train_on_batch(input_list,labellist)
 
 
 epoch_length = 1000
