@@ -58,11 +58,11 @@ class get_voc_label(object):
             outbox['cor'] =cor
             boxlist.append(outbox)
         img_path = img['filepath']
-        boxdict, labellist =self.match(boxlist, label)
+        boxdict, labellist ,labelnpout=self.match(boxlist, label)
         self.batch_index += 1
         if self.batch_index >= self.max_batch:
             self.batch_index = 0
-        return img_path,boxdict,labellist
+        return img_path,boxdict,labellist,labelnpout
 
 
     def match(self,boxlist, label):
@@ -73,6 +73,7 @@ class get_voc_label(object):
         labelnp = np.zeros(class_num + 1)
         for i in range(7):
             labellist.append(labelnp)
+        labelnpout = np.zeros([7,class_num+1])
 
         if len(labellist) != 7:
             raise ValueError('SDFA')
@@ -80,6 +81,9 @@ class get_voc_label(object):
             index = part_map_num[box['name']]
             labellist[index][0] = 1
             labellist[index][label] = 1
+
+            labelnpout[index][0] = 1
+            labelnpout[index][label] =1
             x = box['cor'][0]
             y = box['cor'][1]
             w = box['cor'][2]
@@ -100,7 +104,7 @@ class get_voc_label(object):
             if onecname not in boxdict:
                 boxdict[onecname] = npnone
 
-        return boxdict, labellist
+        return boxdict, labellist,labelnpout
 
 
 #boxlist的内容是一个dict,name为head,legs等,cor为左上角坐标,宽和长,在0-1之间
