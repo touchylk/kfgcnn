@@ -81,3 +81,5 @@ def bird_loss(num):
 		tail_loss = tail_l * bird_true[6][0] * categorical_crossentropy(bird_true[6][1:], y_pred_list[6])
 		return (head_loss+legs_loss+wings_loss+back_loss+belly_loss+breast_loss+tail_loss)/7
 	return bird_loss1
+def part_loss(bird_true,y_pred):
+	return 1  * bird_true[0] * categorical_crossentropy(bird_true[1:], y_pred)

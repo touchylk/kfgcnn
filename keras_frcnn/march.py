@@ -70,7 +70,7 @@ class get_voc_label(object):
         # label的内同是一个数
         labellist = []
         boxdict = {}
-        labelnp = np.zeros(class_num + 1)
+        labelnp = np.zeros([1,class_num + 1])
         for i in range(7):
             labellist.append(labelnp)
         labelnpout = np.zeros([7,class_num+1])
@@ -79,11 +79,11 @@ class get_voc_label(object):
             raise ValueError('SDFA')
         for box in boxlist:
             index = part_map_num[box['name']]
-            labellist[index][0] = 1
-            labellist[index][label] = 1
+            labellist[index][0][0] = 1
+            labellist[index][0][label+1] = 1
 
             labelnpout[index][0] = 1
-            labelnpout[index][label] =1
+            labelnpout[index][label+1] =1
             x = box['cor'][0]
             y = box['cor'][1]
             w = box['cor'][2]

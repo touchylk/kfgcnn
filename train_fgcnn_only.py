@@ -259,9 +259,11 @@ model_rpn.compile(optimizer=optimizer, loss=[losses.rpn_loss_cls(num_anchors), l
 model_classifier.compile(optimizer=optimizer_classifier,
                          loss=[losses.class_loss_cls, losses.class_loss_regr(len(classes_count) - 1)],
                          metrics={'dense_class_{}'.format(len(classes_count)): 'accuracy'})
-
+lossfn_list =[]
+for i in range(7):
+    lossfn_list.append(losses.part_loss)
 model_birdclassifier.compile(optimizer=optimizer,
-                             loss=losses.bird_loss(1),
+                             loss=lossfn_list,
                              )
 
 model_all.compile(optimizer='sgd', loss='mae')
@@ -280,7 +282,7 @@ for i in range(train_num):
     boxnp = np.expand_dims(boxnp,axis=1)
     if K.image_dim_ordering() == 'tf':
         X = np.transpose(X, (0, 2, 3, 1))
-    model_birdclassifier.train_on_batch(input_list,labelnpout)
+    model_birdclassifier.train_on_batch(input_list,labellist)
 
 
 epoch_length = 1000
