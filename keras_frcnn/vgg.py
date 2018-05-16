@@ -121,3 +121,39 @@ def classifier(base_layers, input_rois, num_rois, nb_classes = 21, trainable=Fal
     return [out_class, out_regr]
 
 
+def fg_classifier(base_layers, input_rois, nb_classes=200, trainable=True):
+    pooling_regions = 7
+    input_shape = (num_rois, 7, 7, 512)
+
+    # out_roi_pool = RoiPoolingConv(pooling_regions, num_rois)([base_layers, input_rois])
+    input_rois = np.expand_dims(input_rois, axis=1)
+    input_rois = np.expand_dims(input_rois, axis=1)
+    head = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[0]])
+    legs = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[1]])
+    wings = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[2]])
+    back = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[3]])
+    belly = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[4]])
+    breast = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[5]])
+    tail = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[6]])
+
+    head_out = fg_layer(head,'head',nb_classes=nb_classes)
+    legs_out = fg_layer(legs,'legs',nb_classes=nb_classes)
+    wings_out = fg_layer(wings,'wings',nb_classes=nb_classes)
+    back_out = fg_layer(back,'back',nb_classes=nb_classes)
+    belly_out = fg_layer(belly,'belly',nb_classes=nb_classes)
+    breast_out = fg_layer(breast,'breast',nb_classes=nb_classes)
+    tail_out = fg_layer(tail, 'tail',nb_classes=nb_classes)
+
+    outlist = [head_out,legs_out,wings_out,back_out,belly_out,breast_out,tail_out]
+
+    return outlist
+
+
+def fg_layer(input, name,nb_classes=200):
+    out = TimeDistributed(Flatten(name='flatten' + name))(input)
+    out = TimeDistributed(Dense(4096, activation='relu', name='fc1' + name))(out)
+    out = TimeDistributed(Dropout(0.5))(out)
+    out = TimeDistributed(Dense(4096, activation='relu', name='fc2' + name))(out)
+    out = TimeDistributed(Dropout(0.5))(out)
+    out_class = TimeDistributed(Dense(nb_classes, activation='softmax', kernel_initializer='zero'),name='dense_class_{}'.format(name))(out)
+    return out_class

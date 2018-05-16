@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b15b9ea2-9cd2-496a-8e3d-a3edc2d007b3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keras_frcnn/march.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/march.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keras_frcnn/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/resnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keras_frcnn/vgg.py" beforeDir="false" afterPath="$PROJECT_DIR$/keras_frcnn/vgg.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train_fgcnn_only.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_fgcnn_only.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,20 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="train_frcnn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/train_frcnn.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1425">
-              <caret line="1" column="31" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="resnet.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="799">
-              <caret line="215" selection-start-line="215" selection-end-line="215" />
+            <state relative-caret-position="238">
+              <caret line="247" column="32" lean-forward="true" selection-start-line="247" selection-start-column="32" selection-end-line="247" selection-end-column="32" />
               <folding>
                 <element signature="e#197#234#0" expanded="true" />
                 <element signature="e#611#789#0" />
@@ -43,25 +35,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="march.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/march.py">
+      <file leaf-file-name="vgg.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/keras_frcnn/vgg.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="95" column="20" lean-forward="true" selection-start-line="95" selection-start-column="20" selection-end-line="95" selection-end-column="20" />
+            <state relative-caret-position="364">
+              <caret line="128" column="17" selection-start-line="128" selection-start-column="17" selection-end-line="128" selection-end-column="17" />
               <folding>
-                <element signature="e#16#47#0" expanded="true" />
+                <element signature="e#4067#4127#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pascal_voc_parser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/pascal_voc_parser.py">
+      <file leaf-file-name="march.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/keras_frcnn/march.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="78" column="47" selection-start-line="78" selection-start-column="47" selection-end-line="78" selection-end-column="47" />
+            <state relative-caret-position="64">
+              <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
               <folding>
-                <element signature="e#24#33#0" expanded="true" />
+                <element signature="e#16#47#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,7 +62,7 @@
       <file leaf-file-name="train_fgcnn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_fgcnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
+            <state relative-caret-position="-2192">
               <caret line="166" column="36" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
@@ -80,11 +72,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="train_fgcnn_only.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="train_fgcnn_only.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_fgcnn_only.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="227" column="60" lean-forward="true" selection-start-line="227" selection-start-column="60" selection-end-line="227" selection-end-column="60" />
+            <state relative-caret-position="330">
+              <caret line="230" column="48" selection-start-line="230" selection-start-column="48" selection-end-line="230" selection-end-column="48" />
               <folding>
                 <element signature="e#24#55#0" expanded="true" />
                 <element signature="e#605#2296#1" />
@@ -93,44 +85,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="data_generators.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/data_generators.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="316" column="16" selection-start-line="316" selection-start-column="16" selection-end-line="316" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_frcnn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_frcnn.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="119" column="46" lean-forward="true" selection-start-line="119" selection-start-column="46" selection-end-line="119" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="roi_helpers.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/keras_frcnn/roi_helpers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1395">
-              <caret line="97" column="11" selection-start-line="97" selection-start-column="11" selection-end-line="97" selection-end-column="36" />
-              <folding>
-                <element signature="e#16#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="RoiPoolingConv.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="102" column="28" selection-start-line="102" selection-start-column="28" selection-end-line="102" selection-end-column="28" />
+            <state relative-caret-position="508">
+              <caret line="105" column="19" selection-start-line="105" selection-start-column="19" selection-end-line="105" selection-end-column="19" />
               <folding>
-                <element signature="e#2540#3497#0" />
+                <element signature="e#0#39#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="train_frcnn.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/train_frcnn.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="31" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -175,15 +146,15 @@
         <option value="$PROJECT_DIR$/keras_frcnn/pascal_voc_parser.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/train-fg.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/config.py" />
-        <option value="$PROJECT_DIR$/keras_frcnn/vgg.py" />
-        <option value="$PROJECT_DIR$/keras_frcnn/resnet.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/losses.py" />
         <option value="$PROJECT_DIR$/train_fgcnn.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/roi_helpers.py" />
         <option value="$PROJECT_DIR$/train_frcnn.py" />
-        <option value="$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py" />
         <option value="$PROJECT_DIR$/keras_frcnn/march.py" />
+        <option value="$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py" />
+        <option value="$PROJECT_DIR$/keras_frcnn/resnet.py" />
         <option value="$PROJECT_DIR$/train_fgcnn_only.py" />
+        <option value="$PROJECT_DIR$/keras_frcnn/vgg.py" />
       </list>
     </option>
   </component>
@@ -230,6 +201,11 @@
             <path>
               <item name="kfgcnn" type="b2602c69:ProjectViewProjectNode" />
               <item name="kfgcnn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kfgcnn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kfgcnn" type="462c0819:PsiDirectoryNode" />
+              <item name="keras_frcnn" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -601,13 +577,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/vgg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1512">
-          <caret line="97" column="4" selection-start-line="97" selection-start-column="4" selection-end-line="97" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.local/lib/python2.7/site-packages/numpy/lib/function_base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="194">
@@ -641,13 +610,24 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/yolo_tensorflow-master/train.py" />
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py">
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/data_generators.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="102" column="28" selection-start-line="102" selection-start-column="28" selection-end-line="102" selection-end-column="28" />
-          <folding>
-            <element signature="e#2540#3497#0" />
-          </folding>
+        <state relative-caret-position="448">
+          <caret line="316" column="16" selection-start-line="316" selection-start-column="16" selection-end-line="316" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="119" column="46" lean-forward="true" selection-start-line="119" selection-start-column="46" selection-end-line="119" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train_frcnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="31" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -663,7 +643,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/train_fgcnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
+        <state relative-caret-position="-2192">
           <caret line="166" column="36" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
           <folding>
             <element signature="e#24#55#0" expanded="true" />
@@ -672,17 +652,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/keras_frcnn/data_generators.py">
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/RoiPoolingConv.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="316" column="16" selection-start-line="316" selection-start-column="16" selection-end-line="316" selection-end-column="16" />
+        <state relative-caret-position="508">
+          <caret line="105" column="19" selection-start-line="105" selection-start-column="19" selection-end-line="105" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="215" selection-start-line="215" selection-end-line="215" />
+        <state relative-caret-position="238">
+          <caret line="247" column="32" lean-forward="true" selection-start-line="247" selection-start-column="32" selection-end-line="247" selection-end-column="32" />
           <folding>
             <element signature="e#197#234#0" expanded="true" />
             <element signature="e#611#789#0" />
@@ -691,37 +674,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train_frcnn.py">
+    <entry file="file://$PROJECT_DIR$/train_fgcnn_only.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1425">
-          <caret line="1" column="31" lean-forward="true" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_frcnn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="119" column="46" lean-forward="true" selection-start-line="119" selection-start-column="46" selection-end-line="119" selection-end-column="46" />
+        <state relative-caret-position="330">
+          <caret line="230" column="48" selection-start-line="230" selection-start-column="48" selection-end-line="230" selection-end-column="48" />
+          <folding>
+            <element signature="e#24#55#0" expanded="true" />
+            <element signature="e#605#2296#1" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/keras_frcnn/march.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="95" column="20" lean-forward="true" selection-start-line="95" selection-start-column="20" selection-end-line="95" selection-end-column="20" />
+        <state relative-caret-position="64">
+          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
           <folding>
             <element signature="e#16#47#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train_fgcnn_only.py">
+    <entry file="file://$PROJECT_DIR$/keras_frcnn/vgg.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="227" column="60" lean-forward="true" selection-start-line="227" selection-start-column="60" selection-end-line="227" selection-end-column="60" />
+        <state relative-caret-position="364">
+          <caret line="128" column="17" selection-start-line="128" selection-start-column="17" selection-end-line="128" selection-end-column="17" />
           <folding>
-            <element signature="e#24#55#0" expanded="true" />
-            <element signature="e#605#2296#1" />
+            <element signature="e#4067#4127#0" />
           </folding>
         </state>
       </provider>

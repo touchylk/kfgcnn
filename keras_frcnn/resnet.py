@@ -254,15 +254,31 @@ def fg_location(base_layers,num_anchors):
     # 这里应该是只是做了两层简单的卷积,没有anchor的引入,anchor的体现应在损失函数中.返回是一个list,包括了rpn的分类和回国的只.
     return [x_class, x_regr, base_layers]
 
-
-def fg_classifier(base_layers, input_rois, num_rois, nb_classes = 10, trainable=False):
+ #[img_input, head_roi, legs_roi, wings_roi, back_roi, belly_roi, breast_roi, tail_roi]
+def fg_classifier(base_layers, input_rois, num_rois = 7, nb_classes = 10, trainable=False):
     pooling_regions = 14
     input_shape = (num_rois, 14, 14, 1024)
 
-    out_roi_pool = RoiPoolingConv(pooling_regions, num_rois)([base_layers, input_rois])
+    #out_roi_pool = RoiPoolingConv(pooling_regions, num_rois)([base_layers, input_rois])
+    head = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[0]])
+    legs = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[1]])
+    wings = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[2]])
+    back = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[3]])
+    belly = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[4]])
+    breast = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[5]])
+    tail = RoiPoolingConv(pooling_regions, 1)([base_layers, input_rois[6]])
+
     out = classifier_layers(out_roi_pool,input_shape=input_shape,trainable=True)
     out = TimeDistributed(Flatten())(out)
     out_class = TimeDistributed(Dense(200, activation='softmax',kernel_initializer='zero'), name='dense_class_{}'.format(nb_classes))(out)
 
     return out_class
 
+def fg_layer(input,name):
+
+    out = TimeDistributed(Flatten(name='flatten'+name))(input)
+    out = TimeDistributed(Dense(4096, activation='relu', name='fc1'+name))(out)
+    out = TimeDistributed(Dropout(0.5))(out)
+    out = TimeDistributed(Dense(4096, activation='relu', name='fc2'+name))(out)
+    out = TimeDistributed(Dropout(0.5))(out)
+    return out

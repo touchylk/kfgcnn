@@ -78,7 +78,7 @@ else:
 # cfg.model_path = options.output_weight_path
 # cfg.num_rois = int(options.num_rois)
 
-if 0:  # cfg.network == 'vgg':
+if 1:  # cfg.network == 'vgg':
     # cfg.network = 'vgg'
     from keras_frcnn import vgg as nn
 elif cfg.network == 'resnet50':
@@ -153,7 +153,7 @@ else:
 
 img_input = Input(shape=input_shape_img)
 roi_input = Input(shape=(None, 4))  # roiinput是什么,要去看看清楚
-
+bird_rois_input = Input(shape=(None, 4))
 # define the base network (resnet here, can be VGG, Inception, etc)
 shared_layers = nn.nn_base(img_input, trainable=True)  # 共享网络层的输出.要明确输出的size
 
@@ -165,7 +165,10 @@ rpn = nn.rpn(shared_layers, num_anchors)  ##这里应该是只是做了两层简
 classifier = nn.classifier(shared_layers, roi_input, cfg.num_rois, nb_classes=len(classes_count),
                            trainable=True)  # 主要这里的nb_classes改程序的时候要主要
 # 这里roiinput 似乎是作为一个输入,看下面怎么弄的e
+bird_classifier_output = nn.fg_classifier(shared_layers,bird_rois_input,nb_classes=200, trainable=True)
 
+
+'''
 head_roi = Input(shape=(None, 4))
 legs_roi  = Input(shape=(None, 4))
 wings_roi = Input(shape=(None, 4))
@@ -186,7 +189,14 @@ bird_classifier_output = [head_classifier,legs_classifier,wings_classifier,back_
 model_rpn = Model(img_input, rpn[:2])
 model_classifier = Model([img_input, roi_input], classifier)
 
-model_birdclassifier  =Model([img_input,head_roi,legs_roi,wings_roi,back_roi,belly_roi,breast_roi,tail_roi],bird_classifier_output)
+model_birdclassifier  =Model([img_input,head_roi,legs_roi,wings_roi,back_roi,belly_roi,breast_roi,tail_roi],bird_classifier_output)'''
+
+
+model_rpn = Model(img_input, rpn[:2])
+model_classifier = Model([img_input, roi_input], classifier)
+model_birdclassifier = Model([img_input,bird_rois_input],bird_classifier_output)
+
+#model_birdclassifier = Model([img_input,roi_input],bird_)
 
 # this is a model that holds both the RPN and the classifier, used to load/save weights for the models
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
@@ -222,10 +232,14 @@ for i in train_num:
     img = cv2.imread(img_path)
     #[img_input, head_roi, legs_roi, wings_roi, back_roi, belly_roi, breast_roi, tail_roi]
     X, ratio = format_img(img, cfg)
-    inputlist = [X,boxdict['head'],boxdict[''],boxdict['wings'],boxdict['back'],boxdict['belly'],boxdict['breast'],boxdict['tail']]
+    boxlist = [boxdict['head'],boxdict['legs'],boxdict['wings'],boxdict['back'],boxdict['belly'],boxdict['breast'],boxdict['tail']]
+    boxnp = np.zeros([7,4])
+    for i in range(7):
+        boxnp[i]= boxlist[i]
+
     if K.image_dim_ordering() == 'tf':
         X = np.transpose(X, (0, 2, 3, 1))
-    model_birdclassifier.train_on_batch(inputlist,labellist)
+    model_birdclassifier.train_on_batch([X,boxnp],labellist)
 
 
 epoch_length = 1000
