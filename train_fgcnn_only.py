@@ -270,6 +270,7 @@ model_all.compile(optimizer='sgd', loss='mae')
 
 train_num =1000
 for i in range(train_num):
+    print(i)
     img_path, boxdict, labellist,labelnpout = data_lei.get_next_batch()
     img = cv2.imread(img_path)
     #[img_input, head_roi, legs_roi, wings_roi, back_roi, belly_roi, breast_roi, tail_roi]

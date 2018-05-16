@@ -109,6 +109,7 @@ def classifier(base_layers, input_rois, num_rois, nb_classes = 21, trainable=Fal
     out_roi_pool = RoiPoolingConv(pooling_regions, num_rois)([base_layers, input_rois])
 
     out = TimeDistributed(Flatten(name='flatten'))(out_roi_pool)
+    out1 = out
     out = TimeDistributed(Dense(4096, activation='relu', name='fc1'))(out)
     out = TimeDistributed(Dropout(0.5))(out)
     out = TimeDistributed(Dense(4096, activation='relu', name='fc2'))(out)
@@ -118,7 +119,7 @@ def classifier(base_layers, input_rois, num_rois, nb_classes = 21, trainable=Fal
     # note: no regression target for bg class
     out_regr = TimeDistributed(Dense(4 * (nb_classes-1), activation='linear', kernel_initializer='zero'), name='dense_regress_{}'.format(nb_classes))(out)
 
-    return [out_class, out_regr]
+    return [out_class, out_regr,out1]
 
 
 def fg_classifier(base_layers, input_rois0,input_rois1, input_rois2, input_rois3, input_rois4, input_rois5, input_rois6, nb_classes=200, trainable=True):

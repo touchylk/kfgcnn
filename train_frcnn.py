@@ -154,7 +154,8 @@ classifier = nn.classifier(shared_layers, roi_input, cfg.num_rois, nb_classes=le
 
 model_share = Model(img_input,shared_layers)
 model_rpn = Model(img_input, rpn[:2])
-model_classifier = Model([img_input, roi_input], classifier)
+model_classifier = Model([img_input, roi_input], classifier[:2])
+model_test = Model([img_input, roi_input], classifier)
 
 # this is a model that holds both the RPN and the classifier, used to load/save weights for the models
 model_all = Model([img_input, roi_input], rpn[:2] + classifier)
@@ -165,6 +166,7 @@ try:
 	print('loading weights from {}'.format(cfg.base_net_weights))
 	model_rpn.load_weights(cfg.base_net_weights, by_name=True)
 	model_classifier.load_weights(cfg.base_net_weights, by_name=True)
+	model_test.load_weights(cfg.base_net_weights, by_name=True)
 	model_share.load_weights(cfg.base_net_weights,by_name=True)
 except:
 	print('Could not load pretrained model weights. Weights can be found in the keras application folder \
@@ -178,6 +180,7 @@ model_classifier.compile(optimizer=optimizer_classifier, loss=[losses.class_loss
 
 model_all.compile(optimizer='sgd', loss='mae')
 model_share.compile(optimizer='sgd',loss='mae')
+model_test.compile(optimizer='sgd',loss='mae')
 X, Y, img_data = next(data_gen_train)
 #share_output = model_share.predict_on_batch(X)
 #print(type(share_output))
@@ -283,6 +286,9 @@ for epoch_num in range(num_epochs):
 					sel_samples = random.choice(pos_samples)
 
 			loss_class = model_classifier.train_on_batch([X, X2[:, sel_samples, :]], [Y1[:, sel_samples, :], Y2[:, sel_samples, :]])
+			_,_, out2 = model_test.predict_on_batch[X, X2[:, sel_samples, :]]
+			print(out2.shape)
+			exit(16)
 
 			losses[iter_num, 0] = loss_rpn[1]
 			losses[iter_num, 1] = loss_rpn[2]
