@@ -209,7 +209,7 @@ for epoch_num in range(num_epochs):
 	print('Epoch {}/{}'.format(epoch_num + 1, num_epochs))
 
 	while True:
-		try:
+		if 1:
 
 			if len(rpn_accuracy_rpn_monitor) == epoch_length and cfg.verbose:
 				mean_overlapping_bboxes = float(sum(rpn_accuracy_rpn_monitor))/len(rpn_accuracy_rpn_monitor)
@@ -241,7 +241,7 @@ for epoch_num in range(num_epochs):
 			# note: calc_iou converts from (x1,y1,x2,y2) to (x,y,w,h) format
 			X2, Y1, Y2, IouS = roi_helpers.calc_iou(R, img_data, cfg, class_mapping)
 			#print(X2)
-			exit(8)
+			#exit(8)
 			#这里,x2为roi区域的坐标标签,Y1为roi区域的分类标签,y2为roi区域的坐标标签,坐标标签还是带label的.
 
 			if X2 is None:
@@ -286,7 +286,7 @@ for epoch_num in range(num_epochs):
 					sel_samples = random.choice(pos_samples)
 
 			loss_class = model_classifier.train_on_batch([X, X2[:, sel_samples, :]], [Y1[:, sel_samples, :], Y2[:, sel_samples, :]])
-			_,_, out2 = model_test.predict_on_batch[X, X2[:, sel_samples, :]]
+			asd,fd, out2 = model_test.predict_on_batch([X,X2[:, sel_samples, :]])
 			print(out2.shape)
 			exit(16)
 
@@ -333,8 +333,8 @@ for epoch_num in range(num_epochs):
 
 				break
 
-		except Exception as e:
+		'''except Exception as e:
 			print('Exception: {}'.format(e))
-			continue
+			continue'''
 
 print('Training complete, 呵呵.')

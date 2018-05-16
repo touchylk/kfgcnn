@@ -119,7 +119,7 @@ def classifier(base_layers, input_rois, num_rois, nb_classes = 21, trainable=Fal
     # note: no regression target for bg class
     out_regr = TimeDistributed(Dense(4 * (nb_classes-1), activation='linear', kernel_initializer='zero'), name='dense_regress_{}'.format(nb_classes))(out)
 
-    return [out_class, out_regr,out1]
+    return [out_class, out_regr]
 
 
 def fg_classifier(base_layers, input_rois0,input_rois1, input_rois2, input_rois3, input_rois4, input_rois5, input_rois6, nb_classes=200, trainable=True):
@@ -152,9 +152,9 @@ def fg_classifier(base_layers, input_rois0,input_rois1, input_rois2, input_rois3
 
 def fg_layer(input, name,nb_classes=200):
     out = TimeDistributed(Flatten(name='flatten' + name))(input)
-    out = TimeDistributed(Dense(4096, activation='relu', name='fc1' + name))(out)
+    out = TimeDistributed(Dense(512, activation='relu', name='fc1' + name))(out)
     out = TimeDistributed(Dropout(0.5))(out)
-    out = TimeDistributed(Dense(4096, activation='relu', name='fc2' + name))(out)
+    out = TimeDistributed(Dense(512, activation='relu', name='fc2' + name))(out)
     out = TimeDistributed(Dropout(0.5))(out)
     out = TimeDistributed(Dense(nb_classes, activation='softmax', kernel_initializer='zero'),name='dense_class_{}'.format(name))(out)
     return out
